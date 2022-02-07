@@ -1,0 +1,11 @@
+Model Information:
+* title:	Sonic Redesign
+* source:	https://sketchfab.com/3d-models/sonic-redesign-92220bde339e4ff98141da920840f2f2
+* author:	xeoncat (https://sketchfab.com/xeoncat)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Sonic Redesign" (https://sketchfab.com/3d-models/sonic-redesign-92220bde339e4ff98141da920840f2f2) by xeoncat (https://sketchfab.com/xeoncat) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

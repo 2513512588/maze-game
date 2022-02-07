@@ -1,0 +1,30 @@
+.bubble {
+    position: fixed;
+    width: 300px;
+    padding: 20px 10px;
+    z-index: 999;
+    opacity: 0;
+    /*height: 200px;*/
+    background-color: rgba(0, 0, 0, .3);
+    /*color: rgb(245, 245, 245);*/
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    font-size: 20px;
+}
+
+.bubble .bubble-container {
+
+}
+
+.bubble p {
+    font-family: 'fangsong';
+    font-size: 24px;
+    line-height: 2;
+    text-align: center;
+    opacity: 0;
+    top: -10%;
+    position: relative;
+}

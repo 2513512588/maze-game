@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="WEB_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$/../maze_game_online">
+      <sourceFolder url="file://$MODULE_DIR$/../maze_game_online/." isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../maze_game_online/spec" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../maze_game_online/tests" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/../maze_game_online/vendor/workerman/gateway-worker" />
+      <excludeFolder url="file://$MODULE_DIR$/../maze_game_online/vendor/workerman/globaldata" />
+      <excludeFolder url="file://$MODULE_DIR$/../maze_game_online/vendor/workerman/workerman" />
+      <excludeFolder url="file://$MODULE_DIR$/../maze_game_online/vendor/composer" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>

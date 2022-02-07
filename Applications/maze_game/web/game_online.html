@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+        #chart{
+            width: 220px;
+            height: 180px;
+            position: fixed;
+            right: 10px;
+            top: 35px;
+            z-index: 99999;
+        }
+        /*body{*/
+        /*    position: fixed;*/
+        /*    left: 0;*/
+        /*    top: 0;*/
+        /*}*/
+    </style>
+</head>
+<body>
+
+<div id="Stats-output"></div>
+
+<div id="scene"></div>
+
+<div class="status-bar">
+    <div class="progress-bar">
+        <div></div>
+    </div>
+    <!--    <img src="./image/star.png" alt="" />-->
+    <!--    <img src="./image/star.png" alt="" />-->
+    <!--    <img src="./image/star.png" alt="" />-->
+</div>
+
+
+
+
+<div class="skin-dialog dialog">
+    <div class="dialog_title">
+        <span>选择皮肤</span>
+        <div class="close-btn">
+            <img src="./image/close.svg" width="25" height="25" alt="">
+        </div>
+    </div>
+    <div class="skin_wrap">
+        <img src="./image/caret-left.svg" alt="" />
+        <div class="skin_image_container">
+            <div class="skin_image_wrap">
+                <div>
+                    <img class="skin" src="./image/skin/default.png" data-name="默认" data-level="0" id="MODEL_DEFAULT" alt="" />
+                </div>
+                <div>
+                    <img class="skin" src="./image/skin/sonic.png" data-name="Sonic" data-level="1" id="MODEL_SONIC" alt="" />
+                </div>
+                <div>
+                    <img class="skin" src="./image/skin/racoon.png" data-name="Racoon" data-level="1" id="MODEL_RACOON" alt="" />
+                </div>
+                <div>
+                    <img class="skin" src="./image/skin/zombie.png" data-name="Zombie" data-level="1" id="MODEL_ZOMBIE" alt="" />
+                </div>
+                <div>
+                    <img class="skin" src="./image/skin/monster.png" data-name="Monster" data-level="1" id="MODEL_MONSTER" alt="" />
+                </div>
+                <div>
+                    <img class="skin" src="./image/skin/stewart.png" data-name="Stewart" data-level="1" id="MODEL_STEWART" alt="" />
+                </div>
+            </div>
+        </div>
+        <img src="./image/caret-right.svg" alt="" />
+    </div>
+    <h3 class="dialog_content skin_title"></h3>
+    <button class="use_btn">使用</button>
+</div>
+
+<div class="settings-dialog dialog">
+    <div class="dialog_title">
+        <span>游戏设置</span>
+        <div class="close-btn">
+            <img src="./image/close.svg" width="25" height="25" alt="">
+        </div>
+    </div>
+
+    <div class="dialog_content">
+        显示所有涂色
+        <div class="switch_btn" mode="on">
+            <div>
+                <span>显示</span>
+                <div class="radius_symbol"></div>
+                <span>隐藏</span>
+            </div>
+        </div>
+    </div>
+    <button class="save_btn">保存</button>
+</div>
+
+<div class="tips-dialog dialog">
+    <div class="dialog_title">
+        <span>提示</span>
+        <div class="close-btn">
+            <img src="./image/close.svg" width="25" height="25" alt="">
+        </div>
+    </div>
+    <h3 class="dialog_content tips_content">游戏失败</h3>
+    <button class="replay_btn">再试一次</button>
+</div>
+
+
+<div class="message-dialog dialog">
+    <div class="dialog_title">
+        <span>消息提示</span>
+        <div class="close-btn">
+            <img src="./image/close.svg" width="25" height="25" alt="">
+        </div>
+    </div>
+
+    <h4 class="dialog_content dialog_message_content">
+    </h4>
+    <button class="close-btn">关闭</button>
+</div>
+
+<!--功能栏-->
+<div class="options_container">
+    <div class="hidden">
+        <img src="./image/level.svg" alt=""/>
+    </div>
+    <div>
+        <img src="./image/skin.svg" alt=""/>
+    </div>
+    <div>
+        <img src="./image/settings.svg" alt=""/>
+    </div>
+    <div>
+        <img src="./image/home.svg" alt=""/>
+    </div>
+</div>
+
+
+<script src="./js/three.js" type="text/javascript"></script>
+<script src="./js/stats.min.js" type="text/javascript"></script>
+<script src="./js/echarts.min.js" type="text/javascript"></script>
+
+
+<div id="chart"></div>
+
+<script type="module">
+
+    import GameOnline from "./js/custom/GameOnline.js";
+    import Factory from "./js/custom/Factory.js";
+    import config from './js/custom/Config.js'
+
+    let stats = new Stats()
+    stats.setMode(0)
+    document.getElementById('Stats-output').appendChild(stats.domElement)
+
+    //传入需要预加载的资源
+    Factory.preload(()=>{
+        new GameOnline().startup({
+            stats
+        })
+    }, [Factory.buildModel(config.MODEL.DEFAULT), Factory.buildModel(config.MODEL.ENVIRONMENT), Factory.buildFont(), Factory.buildNames()])
+
+
+
+</script>
+
+</body>
+</html>

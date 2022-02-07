@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <style>
+
+        main {
+            height: 100vh;
+            display: flex;
+            overflow-y: hidden;
+        }
+
+        .sidebar {
+            min-width: 250px;
+            width: 250px;
+            overflow-y: scroll;
+        }
+
+        .main {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            background-color: #eee;
+        }
+
+        .main.none, .main.no_choose {
+            position: relative;
+            background: #eee url("./image/no-data.png") center / 200px no-repeat;
+        }
+
+        .main.none:after, .main.no_choose:after {
+            color: #606266;
+            content: '暂无地图';
+            position: absolute;
+            top: 60%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .main.no_choose:after {
+            content: '请先选择地图';
+        }
+
+        .sidebar .search {
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .sidebar .search .icon {
+            width: 25px;
+        }
+
+        .sidebar .search .icon img {
+            width: 100%;
+            vertical-align: middle;
+        }
+
+        .sidebar .search form {
+            flex: 1;
+        }
+
+        .sidebar .list {
+            padding: 10px 10px 0 10px;
+        }
+
+        .sidebar .item {
+            border-radius: 10px;
+            overflow: hidden;
+            /*box-sizing: border-box;*/
+            margin-bottom: 10px;
+            cursor: pointer;
+            border: 3px solid transparent;
+        }
+
+        .sidebar .item.active {
+            border-color: var(--mainColor);
+        }
+
+        .sidebar .item .item-img {
+            width: 100%;
+            height: 120px;
+            overflow: hidden;
+        }
+
+        .sidebar .item-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            vertical-align: middle;
+        }
+
+        .sidebar .item .item-title {
+            text-align: center;
+            padding: 10px 0;
+            background-color: #ddd;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            color: #666;
+        }
+
+        .sidebar .search input[type=search] {
+            border: 0;
+            outline: 0;
+            width: 100%;
+            font-size: 18px;
+            padding: 10px 0 10px 10px;
+        }
+
+        .sidebar .plus {
+            margin: 0 10px 10px;
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            cursor: pointer;
+            justify-content: center;
+            background-color: #eeeeee;
+        }
+
+        .sidebar .plus img {
+            width: 50px;
+        }
+
+        .custom, .preview {
+            position: relative;
+            width: 100%;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .custom > div {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .preview > canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        .block {
+            /*width: calc(100% / 10);*/
+            /*width: 80px;*/
+            /*height: 80px;*/
+            box-sizing: border-box;
+            border: 1px solid #eee;
+            color: #fff;
+            transition: .3s;
+            user-select: none;
+            position: relative;
+        }
+
+        .block::after {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+        }
+
+        .block.fill {
+            background: #f18484;
+            /*background: #95a5a6;*/
+        }
+
+        .block.floor {
+            background: #d7d6d6;
+            /*background: url("./image/img.png") 0 0 /100% 100% no-repeat;*/
+        }
+
+        .block.initPos {
+            background: #d7d6d6 url("./image/skin/default.png") center / 100% no-repeat;
+            /*background: #2f0505;*/
+        }
+
+        .block.active {
+
+            border: 4px dashed #ffff5b;
+        }
+
+        .block.fill::after {
+            /*content: "障碍物";*/
+            white-space: nowrap;
+        }
+
+        .block.floor::after {
+            /*content: "空地";*/
+            white-space: nowrap;
+        }
+
+        .block.initPos::after {
+            /*content: "小球" !important;*/
+            white-space: nowrap;
+        }
+
+        #menu {
+            position: absolute;
+            z-index: 9999;
+            background: white;
+            border: 1px solid;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
+        }
+
+        .sub-menu-btn {
+            width: 100%;
+            background-color: white;
+            border: 1px solid #eee;
+            text-align: left;
+            padding: 4px 8px;
+        }
+
+        .sub-menu-btn:hover {
+            background: #95a5a6;
+            color: #fff;
+        }
+
+        .main.none .operation, .main.no_choose .operation {
+            display: none !important;
+        }
+
+        .main.none .custom, .main.no_choose .custom {
+            display: none !important;
+        }
+
+        main.none .preview, .main.no_choose .preview {
+            display: none !important;
+        }
+
+        .operation {
+            /*width: 60%;*/
+            margin-bottom: 10px;
+        }
+
+        .operation form.form {
+            padding: 10px;
+            background-color: white;
+        }
+
+        .operation form.form .form-inputs {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .operation form.form .form-buttons {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .operation form.form .form-buttons .btn {
+            margin-right: 10px;
+        }
+
+
+        .form-item {
+            /*display: inline-block;*/
+            margin: 10px 20px 10px 0;
+            font-size: 14px;
+            color: #666;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-item span {
+            text-align: right;
+            vertical-align: middle;
+            float: left;
+            font-size: 14px;
+            color: #606266;
+            line-height: 40px;
+            padding: 0 12px 0 0;
+            box-sizing: border-box;
+        }
+
+        .form-item input {
+            width: 200px;
+            -webkit-appearance: none;
+            background-color: #fff;
+            background-image: none;
+            border-radius: 4px;
+            border: 1px solid #dcdfe6;
+            box-sizing: border-box;
+            color: #606266;
+            display: inline-block;
+            font-size: inherit;
+            height: 40px;
+            line-height: 40px;
+            outline: none;
+            padding: 0 15px;
+            transition: border-color .2s cubic-bezier(.645, .045, .355, 1);
+        }
+
+        .form-item.number input {
+            width: 80px;
+            text-align: center;
+            margin: 0 5px;
+        }
+
+        .form-item.number .button {
+            cursor: pointer;
+            user-select: none;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #dcdfe6;
+            box-sizing: border-box;
+            outline: none;
+            border-radius: 4px;
+        }
+
+        .form-item.number .button.disabled {
+            cursor: not-allowed;
+            background-color: rgb(235, 236, 238);
+        }
+
+        .form-item.number .button img {
+            width: 20px;
+            vertical-align: middle;
+        }
+
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+
+    </style>
+    <script type="text/javascript" src="./js/jquery-3.3.1.min.js"></script>
+
+</head>
+<body>
+
+<main>
+
+    <div class="sidebar">
+        <div class="search">
+            <div class="icon"><img src="./image/search.svg" alt=""></div>
+            <form onsubmit="return false">
+                <input type="search" onchange="searchMap()" name="title" id="">
+            </form>
+        </div>
+        <div class="list">
+
+        </div>
+        <div class="plus" onclick="newMap()">
+            <img src="./image/plus.svg" alt="">
+        </div>
+    </div>
+
+    <div class="main no_choose">
+        <div class="operation">
+            <form class="form" action="#" method="post" onsubmit="return saveMap()">
+                <div class="form-inputs">
+                    <div class="form-item">
+                        <label>
+                            <input type="hidden" id="id"/>
+                        </label>
+                    </div>
+                    <div class="form-item">
+                        <span>标题</span>
+                        <label>
+                            <input type="text" id="title" onchange="map.title = this.value" required/>
+                        </label>
+                    </div>
+                    <div class="form-item number">
+                        <span>行数</span>
+                        <div class="button"
+                             onclick="changeValue($(this).parent().find('input'),$(this).parent().find('input').val()-1,true)">
+                            <img src="./image/volumeless.svg" alt="">
+                        </div>
+                        <label>
+                            <input type="number" value="10" max="15" min="5" step="1" id="row"
+                                   onchange="changeValue($(this),this.value,true)"
+                                   required/>
+                        </label>
+                        <div class="button"
+                             onclick="changeValue($(this).parent().find('input'),$(this).parent().find('input').val()-(-1),true)">
+                            <img src="./image/volumeup.svg" alt="">
+                        </div>
+                    </div>
+                    <div class="form-item number">
+                        <span>列数</span>
+                        <div class="button"
+                             onclick="changeValue($(this).parent().find('input'),$(this).parent().find('input').val()-1,true)">
+                            <img src="./image/volumeless.svg" alt="">
+                        </div>
+                        <label>
+                            <input type="number" value="10" max="15" min="5" step="1" id="col"
+                                   onchange="changeValue($(this),this.value,true)"
+                                   required/>
+                        </label>
+                        <div class="button"
+                             onclick="changeValue($(this).parent().find('input'),$(this).parent().find('input').val()-(-1),true)">
+                            <img src="./image/volumeup.svg" alt="">
+                        </div>
+                    </div>
+                    <div class="form-item number">
+                        <span>可移动格子数</span>
+                        <div class="button"
+                             onclick="changeValue($(this).parent().find('input'),$(this).parent().find('input').val()-10)">
+                            <img src="./image/volumeless.svg" alt="">
+                        </div>
+                        <label>
+                            <input type="number" value="150" min="10" step="10" max="1000" id="moveCount"
+                                   onchange="changeValue($(this),this.value)" required/>
+                        </label>
+                        <div class="button"
+                             onclick="changeValue($(this).parent().find('input'),$(this).parent().find('input').val()-(-10))">
+                            <img src="./image/volumeup.svg" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-buttons">
+                    <div class="switch_btn" style="margin-right: 30px" mode="on">
+                        <div>
+                            <span>预览</span>
+                            <div class="radius_symbol"></div>
+                            <span>编辑</span>
+                        </div>
+                    </div>
+                    <button class="btn" type="submit">保存地图</button>
+                    <button class="btn" type="button" onclick="shareMap()">分享地图</button>
+                    <button class="btn green" type="button" onclick="turnOff()">一键反转</button>
+                    <button class="btn red" type="button" onclick="resetMap()">重置</button>
+                    <button class="btn red" type="button" onclick="clearMap()">删除</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="custom">
+
+        </div>
+
+        <div class="preview" style="display: none;">
+
+        </div>
+
+        <div id="menu" style="display: none;">
+            <input type="button" class="sub-menu-btn" id="obstacle" value="设置为障碍物"/>
+            <input type="button" class="sub-menu-btn" id="blank" value="设置为空地"/>
+            <input type="button" class="sub-menu-btn" id="turnOff" value="反转"/>
+            <input type="button" class="sub-menu-btn" id="initPos" value="设置为球初始位置"/>
+        </div>
+
+    </div>
+
+</main>
+
+<script type="module">
+
+    import Progress from "./js/custom/Progress.js";
+    import {Game} from './js/custom/Game.js';
+    import Factory from './js/custom/Factory.js';
+
+    let previewDom = $('.preview').get(0)
+
+    window.preview = function (map) {
+
+        let progress = new Progress(previewDom)
+
+        Factory.loading((url, itemsLoaded, itemsTotal) => {
+            progress.onProgress(itemsLoaded / itemsTotal)
+        })
+
+        Factory.preload().then(() => {
+            progress.onLoad()
+            new Game().preview(map, previewDom)
+        })
+    }
+
+
+</script>
+
+<script type="text/javascript">
+
+    // worker 内部使用 importScripts()
+
+    Promise.all([
+        import('./js/custom/Utils.js'),
+        import('./js/custom/Config.js'),
+        import('./js/custom/Dialog.js'),
+        import('./js/custom/Toast.js'),
+        import('./js/custom/Map.js')
+    ]).then(modules => {
+        const LOC_MAP_KEY = modules[1].default.LOC_MAP_KEY
+
+        const BASE_URL = modules[1].default.GAME_ONLINE.BASE_URL
+
+        // const Dialog = new modules[2].default('.message-dialog')
+
+        const Toast = modules[3].default
+
+        const Map = modules[4].default
+
+
+        let target = null
+        let dirTarget = null
+
+        window.map = {}
+
+        ;(() => {
+            if (localStorage.getItem(LOC_MAP_KEY) === null) {
+                let maps = new Map().getMap()
+                maps = maps.map(item => {
+                    return {
+                        id: modules[0].uuid(),
+                        matrix: item.matrix,
+                        position: item.position,
+                        title: '默认' + item.id,
+                        value: item.value,
+                        default: true
+                    }
+                })
+                localStorage.setItem(LOC_MAP_KEY, JSON.stringify(maps))
+            }
+        })()
+
+        // 加载 localStorage 中的地图并渲染到左侧
+        window.loadMap = function (maps) {
+            $('.sidebar .list').html('')
+            let mapArr = []
+            if (typeof maps === 'undefined') {
+                let maps = localStorage.getItem(LOC_MAP_KEY)
+                if (maps !== null) {
+                    mapArr = JSON.parse(maps)
+                }
+            } else {
+                mapArr = maps
+            }
+
+            if (mapArr.length > 0) {
+                mapArr.forEach(item => {
+                    let template = `<div onclick="window.selectLevel(this,'${item.id}')" class="item">
+                <div class="item-img">
+                    <img src="./image/home-bg.gif" alt="">
+                </div>
+                <div class="item-title">${item.title}</div>
+            </div>`
+                    $('.sidebar .list').append(template)
+                })
+                // $('.main').addClass('no_choose').removeClass('none')
+                $('.main').removeClass('none')
+            } else {
+                // $('.main').addClass('none').removeClass('no_choose')
+                $('.main').addClass('none')
+            }
+        }
+
+        window.loadMap()
+
+        /**
+         * 修改 input中的信息
+         *
+         * @param element input的 Jquery 对象
+         * @param value 是否增加
+         * @param isRowOrCol 是否为 row 或 col
+         */
+        window.changeValue = function (element, value, isRowOrCol) {
+            const input = element
+            const buttons = element.parent().siblings('.button')
+            const step = input.attr('step')
+            const max = input.attr('max')
+            const min = input.attr('min')
+            value = Number(value)
+            if (value >= max) {
+                buttons.eq(0).removeClass('disabled')
+                buttons.eq(1).addClass('disabled')
+                value = max
+            } else if (value <= min) {
+                buttons.eq(0).addClass('disabled')
+                buttons.eq(1).removeClass('disabled')
+                value = min
+            } else {
+                buttons.removeClass('disabled')
+            }
+            input.val(value - value % step)
+            isRowOrCol && window.map && settingMap()
+        }
+
+
+        /**
+         * 设置矩阵中方块的大小
+         * @param row 行
+         * @param col 列
+         */
+        window.setBlock = function (row, col) {
+            const container = $('.custom')
+            const containerWidth = container.get(0).getBoundingClientRect().width
+            const containerHeight = container.get(0).getBoundingClientRect().height
+            $('.block').each((index, item) => {
+                item.style.width = Math.min(containerWidth / col, containerHeight / row) + 'px'
+                item.style.height = Math.min(containerWidth / col, containerHeight / row) + 'px'
+            })
+        }
+
+        /**
+         * 把 map对象中的矩阵信息渲染到页面
+         * @param map
+         */
+        window.renderer = function (map) {
+            let row = map.matrix.length
+            let col = map.matrix[0].length
+            let container = $('.custom')
+            container.html('')
+            for (let i = 0; i < row; i++) {
+                let div = document.createElement('div')
+                for (let j = 0; j < col; j++) {
+                    let block = document.createElement('div')
+
+                    block.classList.add('block')
+
+                    //最外层无法设置效果
+                    if (i !== 0 && i !== row - 1 && j !== 0 && j !== col - 1) {
+                        block.classList.add('normal')
+                        if (map.matrix[i][j] === 0) {
+                            block.classList.add('floor')
+                        } else if (map.matrix[i][j] === 1) {
+                            block.classList.add('fill')
+                        }
+                    } else {
+                        block.classList.add('fill')
+                    }
+                    if (map.position && map.position[0] === i && map.position[1] === j) {
+                        block.classList.add('initPos')
+                    }
+
+                    div.appendChild(block)
+                }
+                container.append(div)
+            }
+
+            window.setBlock(row, col)
+
+            $('.block').mousedown(function (e) {
+                target = this
+            }).mousemove(function (e) {
+                if (target) {
+                    let targetBound = target.getBoundingClientRect()
+                    if (this !== target) {
+                        dirTarget = this
+                    }
+                    if (dirTarget) {
+
+                        //上下移动 起始和现在选择left一致才能上下选中
+                        if (dirTarget.getBoundingClientRect().left === targetBound.left) {
+                            /**
+                             * dir = 0
+                             * 没有方向
+                             * 1 下边
+                             * 2 上边
+                             * @type {number}
+                             */
+                            let dir = e.pageY > targetBound.top ? 1 : 2
+                            Array.from(document.querySelectorAll('.block')).filter(item => item.getBoundingClientRect().left === targetBound.left).forEach(item => {
+                                let itemBound = item.getBoundingClientRect()
+                                if (dir === 1) {
+                                    if (e.pageY > itemBound.top) {
+                                        if (itemBound.top >= targetBound.top) {
+                                            item.classList.add('active')
+                                        }
+                                    } else {
+                                        item.classList.remove('active')
+                                    }
+                                } else if (dir === 2) {
+                                    if (e.pageY < itemBound.top + itemBound.height) {
+                                        if (itemBound.top <= targetBound.top) {
+                                            item.classList.add('active')
+                                        }
+                                    } else {
+                                        item.classList.remove('active')
+                                    }
+                                }
+                            })
+                            //左右移动
+                        } else if (dirTarget.getBoundingClientRect().top === targetBound.top) {
+                            /**
+                             * dir = 0
+                             * 没有方向
+                             * 1 右边
+                             * 2 左边
+                             * @type {number}
+                             */
+                            let dir = e.pageX > targetBound.left ? 1 : 2
+                            Array.from(document.querySelectorAll('.block')).filter(item => item.getBoundingClientRect().top === targetBound.top).forEach(item => {
+                                let itemBound = item.getBoundingClientRect()
+                                if (dir === 1) {
+                                    if (e.pageX > itemBound.left) {
+                                        if (itemBound.left >= targetBound.left) {
+                                            item.classList.add('active')
+                                        }
+                                    } else {
+                                        item.classList.remove('active')
+                                    }
+                                } else if (dir === 2) {
+                                    if (e.pageX < itemBound.left + itemBound.width) {
+                                        if (itemBound.left <= targetBound.left) {
+                                            item.classList.add('active')
+                                        }
+                                    } else {
+                                        item.classList.remove('active')
+                                    }
+                                }
+                            })
+                        }
+                    }
+
+                }
+            }).mouseup(function (e) {
+                if (dirTarget === null && target !== null && $('.block.active').length <= 1) {
+                    target.classList.toggle('active')
+                }
+                target = null
+                dirTarget = null
+            })
+
+            $(".block.normal").on("contextmenu", function (e) {
+
+                if ($('.block.active').length === 0) {
+                    e.target.classList.add('active')
+                }
+                target = null
+                dirTarget = null
+                $("#menu").show(100)
+                $('#menu').css({
+                    'top': e.pageY + 'px',
+                    'left': e.pageX + 'px'
+                });
+                return false;
+            })
+
+        }
+
+        /**
+         * 添加一个新的未设置的地图
+         */
+        window.newMap = function () {
+            if (document.querySelector('.switch_btn').getAttribute('mode') === 'off') {
+                document.querySelector('.switch_btn').click()
+            }
+            const row = 10
+            const col = 10
+            const moveCount = 150
+            $('#row').val(row)
+            $('#col').val(col)
+            $('#moveCount').val(moveCount)
+            $('#title').val('')
+            $('.main').removeClass('none no_choose')
+            $('.sidebar .list .item').each((index, item) => {
+                item.classList.remove('active')
+            })
+            window.map = {
+                id: modules[0].uuid(),
+                matrix: generatedMatrix(row, col),
+                value: moveCount,
+            }
+            window.renderer(window.map)
+        }
+
+        /**
+         * 设置原有的map
+         */
+        window.settingMap = function () {
+            let currMap = readCurrentMap()
+            window.map.matrix = currMap.matrix
+            window.map.position = currMap.position
+            const row = $('#row').val() - 0
+            const col = $('#col').val() - 0
+            const oldRow = map.matrix.length
+            const oldCol = map.matrix[0].length
+            let r = oldRow - row
+            let c = oldCol - col
+            if (map.position && (map.position[0] >= row - 1 || map.position[1] >= col - 1)) {
+                delete map.position
+            }
+            if (r > 0) {
+                // row 减少
+                let last = map.matrix.splice(map.matrix.length - 1)
+                map.matrix.splice(map.matrix.length - r, r)
+                map.matrix.push(...last)
+            } else if (r < 0) {
+                // row 增加
+                r *= -1;
+                let arr = []
+                for (let i = 0; i < r; i++) {
+                    let columns = []
+                    for (let j = 0; j < col; j++) {
+                        if (j === 0 || j === col - 1)
+                            columns.push(1)
+                        else
+                            columns.push(0)
+                    }
+                    arr.push(columns)
+                }
+                map.matrix.splice(map.matrix.length - 1, 0, ...arr)
+            }
+            if (c > 0) {
+                // col 减少
+                let len = map.matrix[0].length
+                for (let i = 0; i < row; i++) {
+                    map.matrix[i].splice(len - 1 - c, c)
+                }
+            } else if (c < 0) {
+                // col 增加
+                c *= -1;
+                for (let i = 0; i < c; i++) {
+                    for (let j = 0; j < row; j++) {
+                        if (j === 0 || j === row - 1)
+                            map.matrix[j].splice(map.matrix[j].length - 1, 0, 1)
+                        else
+                            map.matrix[j].splice(map.matrix[j].length - 1, 0, 0)
+                    }
+                }
+            }
+            window.renderer(map)
+        }
+
+        /**
+         * 生成一个矩阵并返回
+         * @param row 行
+         * @param col 列
+         * @returns {*[]} 矩阵
+         */
+        window.generatedMatrix = function (row, col) {
+            let matrix = []
+            for (let i = 0; i < row; i++) {
+                let arr = []
+                for (let j = 0; j < col; j++) {
+                    if (i !== 0 && i !== row - 1 && j !== 0 && j !== col - 1)
+                        arr.push(0)
+                    else
+                        arr.push(1)
+                }
+                matrix.push(arr)
+            }
+            return matrix
+        }
+
+        /**
+         * 选择关卡并将关卡的信息渲染到页面中
+         * @param ele 点击的 DOM 对象
+         * @param id 关卡 id
+         */
+        window.selectLevel = function (ele, id) {
+            $('.main').removeClass('no_choose')
+            $('.sidebar .list .item').each((index, item) => {
+                item.classList.remove('active')
+            })
+            ele.classList.add('active')
+            const maps = JSON.parse(localStorage.getItem(LOC_MAP_KEY))
+            const map = maps.find(item => item.id === id)
+            if (map) {
+                if (document.querySelector('.switch_btn').getAttribute('mode') === 'on') {
+                    window.renderer(map)
+                } else {
+                    document.querySelector('.preview').innerHTML = ''
+                    window.preview(map)
+                }
+                window.map = map
+                $('#id').val(map.id)
+                $('#title').val(map.title)
+                $('#row').val(map.matrix.length)
+                $('#col').val(map.matrix[0].length)
+                $('#moveCount').val(map.value)
+            }
+        }
+
+        /**
+         * 读取当前编辑好的地图并返回 map 对象
+         * @returns {*[]} map对象 只有 matrix 和 position 信息
+         */
+        window.readCurrentMap = function () {
+            let map = []
+            map.matrix = []
+            $('.custom>div').each((index, item) => {
+                let row = []
+                $(item).find('.block').each((idx, el) => {
+                    if (el.classList.contains('fill')) {
+                        row.push(1)
+                    } else if (el.classList.contains('floor')) {
+                        row.push(0)
+                    } else {
+                        row.push('self')
+                    }
+                    if (el.classList.contains('initPos')) {
+                        map.position = [index, idx]
+                    }
+                })
+                map.matrix.push(row)
+            })
+            return map
+        }
+
+        /**
+         * 切换模式 (编辑和预览)
+         */
+        document.querySelector('.switch_btn').addEventListener('click', function () {
+            const mode = this.getAttribute('mode')
+            const preview = $('.preview')
+            const custom = $('.custom')
+            if (mode === 'on') {
+                this.setAttribute('mode', 'off')
+                custom.hide()
+                preview.get(0).style.display = 'flex'
+                window.preview(readCurrentMap())
+            } else {
+                this.setAttribute('mode', 'on')
+                preview.hide()
+                custom.get(0).style.display = 'flex'
+                preview.html('')
+                let map = readCurrentMap()
+                window.setBlock(map.matrix.length, map.matrix[0].length)
+            }
+        })
+
+        $(document).on('click', function (e) {
+            $('#menu').hide();
+        });
+
+        $('.sub-menu-btn').click(function (e) {
+            let actives = $('.block.normal.active')
+            if (!actives.length) {
+                new Toast('没有选中目标').show()
+            } else {
+                if (e.target.id === 'obstacle') {
+                    actives.removeClass('floor').removeClass('initPos').addClass('fill')
+                } else if (e.target.id === 'blank') {
+                    actives.removeClass('fill').removeClass('initPos').addClass('floor')
+                } else if (e.target.id === 'turnOff') {
+                    actives.toggleClass('floor').toggleClass('fill')
+                } else if (e.target.id === 'initPos') {
+                    if (actives.length === 1) {
+                        $('.block.initPos').removeClass('initPos')
+                        actives.addClass('initPos')
+                    } else {
+                        new Toast('初始位置只能设置一个').show()
+                    }
+                }
+                $('.block.active').removeClass('active')
+            }
+        })
+
+        // 反转地图
+        window.turnOff = function () {
+            $('.block.normal').toggleClass('floor').toggleClass('fill')
+            if (document.querySelector('.switch_btn').getAttribute('mode') === 'off') {
+                document.querySelector('.preview').innerHTML = ''
+                window.preview(readCurrentMap())
+            }
+        }
+
+        /**
+         * 把地图保存到 localStorage 中
+         * @returns {boolean} 阻止 form 的默认事件
+         */
+        window.saveMap = function () {
+            if ($('.block.initPos').length !== 1) {
+                new Toast('请设置正确的初始位置').show()
+            } else {
+                let currentMap = readCurrentMap()
+                let mapArr = localStorage.getItem(LOC_MAP_KEY)
+                if (mapArr) {
+                    mapArr = JSON.parse(mapArr)
+                } else {
+                    mapArr = []
+                }
+                map.matrix = currentMap.matrix
+                map.position = currentMap.position
+                let index = mapArr.findIndex(item => item.id === map.id)
+                map.default && delete map.default
+                if (index !== -1) {
+                    mapArr[index] = map
+                } else {
+                    mapArr.push(map)
+                }
+                localStorage.setItem(LOC_MAP_KEY, JSON.stringify(mapArr))
+                new Toast('保存成功').show()
+                window.loadMap()
+                $('.sidebar .list .item').eq(index).addClass('active')
+            }
+            return false
+        }
+
+        /**
+         * 重置地图
+         */
+        window.resetMap = function () {
+            let mapArr = localStorage.getItem(LOC_MAP_KEY)
+            if (mapArr) {
+                mapArr = JSON.parse(mapArr)
+                let map = mapArr.find(item => item.id === window.map.id)
+                if (map) {
+                    window.map = map
+                    $('#id').val(map.id)
+                    $('#row').val(map.matrix.length)
+                    $('#col').val(map.matrix[0].length)
+                    $('#moveCount').val(map.value)
+                    $('#title').val(map.title)
+                    if (document.querySelector('.switch_btn').getAttribute('mode') === 'off') {
+                        document.querySelector('.preview').innerHTML = ''
+                        window.preview(map)
+                    }
+                    window.renderer(map)
+                } else {
+                    window.newMap()
+                }
+            }
+        }
+
+        /**
+         * 删除地图
+         */
+        window.clearMap = function () {
+            if ($('.sidebar .list .item.active').length === 0) {
+                new Toast('请先选择地图').show()
+            } else {
+                let mapArr = localStorage.getItem(LOC_MAP_KEY)
+                if (mapArr) {
+                    mapArr = JSON.parse(mapArr)
+                    mapArr = mapArr.filter(item => item.id !== window.map.id)
+                }
+                localStorage.setItem(LOC_MAP_KEY, JSON.stringify(mapArr))
+                new Toast('删除成功').show()
+                $('.main').addClass('no_choose')
+                window.loadMap()
+            }
+        }
+
+        /**
+         * 分享地图
+         */
+        window.shareMap = function () {
+            if ($('.sidebar .list .item.active').length === 0) {
+                new Toast('请选选择地图').show()
+            } else {
+                console.log(window.map)
+                let params = 'map=' + JSON.stringify(window.map)
+                // window.saveMap()
+
+                fetch('http://' + BASE_URL + ':' + modules[1].default.GAME_ONLINE.HTTP_PORT + '/room/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: params
+                }).then(res => res.json()).then(res => {
+                    console.log(res)
+                    if (res.success) {
+                        new Toast('房间链接已复制到剪贴板').show()
+                        execCoy(location.href.replace('custom', 'game_online') + '?roomId=' + res.data.uuid)
+                    }
+                })
+            }
+            return false
+        }
+
+        function execCoy(text) {
+            const input = document.createElement('input');
+            input.style.opacity = 0;
+            input.style.position = 'absolute';
+            input.style.left = '-100000px';
+            document.body.appendChild(input);
+
+            input.value = text;
+            input.select();
+            input.setSelectionRange(0, text.length);
+            document.execCommand('copy');
+            document.body.removeChild(input);
+            return true;
+        }
+
+        window.searchMap = function () {
+            let value = $('.search input').val()
+            let mapArr = localStorage.getItem(LOC_MAP_KEY)
+            if (mapArr) {
+                mapArr = JSON.parse(mapArr)
+                window.loadMap(mapArr.filter(item => item.title.indexOf(value) !== -1))
+            }
+        }
+
+    })
+
+</script>
+
+<script src="./js/three.js" type="text/javascript"></script>
+
+
+</body>
+</html>

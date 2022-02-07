@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/bubble.css">
+</head>
+<body>
+
+
+<div id="Stats-output"></div>
+
+<div id="scene"></div>
+
+<div class="status-bar" >
+    <div class="progress-bar">
+        <div></div>
+    </div>
+    <!--    <img src="./image/star.png" alt="" />-->
+    <!--    <img src="./image/star.png" alt="" />-->
+    <!--    <img src="./image/star.png" alt="" />-->
+</div>
+
+
+<div class="skin-dialog dialog">
+    <div class="dialog_title">
+        <span>选择皮肤</span>
+        <div class="close-btn">
+            <img src="./image/close.svg" width="25" height="25" alt="">
+        </div>
+    </div>
+    <div class="skin_wrap">
+        <img src="./image/caret-left.svg" alt=""/>
+        <div class="skin_image_container">
+            <div class="skin_image_wrap">
+                <div>
+                    <img class="skin" src="./image/skin/default.png" data-name="默认" data-level="0" id="MODEL_DEFAULT" alt="" />
+                </div>
+                <div>
+                    <img class="skin" src="./image/skin/sonic.png" data-name="Sonic" data-level="1" id="MODEL_SONIC" alt="" />
+                </div>
+                <div>
+                    <img class="skin" src="./image/skin/racoon.png" data-name="Racoon" data-level="2" id="MODEL_RACOON" alt="" />
+                </div>
+                <div>
+                    <img class="skin" src="./image/skin/zombie.png" data-name="Zombie" data-level="3" id="MODEL_ZOMBIE" alt="" />
+                </div>
+                <div>
+                    <img class="skin" src="./image/skin/monster.png" data-name="Monster" data-level="4" id="MODEL_MONSTER" alt="" />
+                </div>
+                <div>
+                    <img class="skin" src="./image/skin/stewart.png" data-name="Stewart" data-level="4" id="MODEL_STEWART" alt="" />
+                </div>
+            </div>
+        </div>
+        <img src="./image/caret-right.svg" alt=""/>
+    </div>
+    <h3 class="dialog_content skin_title"></h3>
+    <button class="use_btn">使用</button>
+</div>
+
+
+<div class="tips-dialog dialog">
+    <div class="dialog_title">
+        <span>提示</span>
+        <div class="close-btn">
+            <img src="./image/close.svg" width="25" height="25" alt="">
+        </div>
+    </div>
+    <h3 class="dialog_content tips_content">游戏失败</h3>
+    <button class="replay_btn">再试一次</button>
+</div>
+
+<!-- 选择关卡 -->
+<div class="level-dialog dialog container">
+    <div class="dialog_title">
+        <span>选择关卡</span>
+        <div class="close-btn">
+            <img src="./image/close.svg" width="25" height="25" alt="">
+        </div>
+    </div>
+    <div class="main">
+        <div class="self">
+            <div class="info">
+                <span>系统关卡</span>
+                <div class="star">
+                    <img width="20" height="20" src="./image/star-fill.svg" alt="">
+                    <span class="star_obtained">0</span>/
+                    <span class="star_total">0</span>
+                </div>
+            </div>
+            <div class="level-subsection-wrap">
+                <div class="level-subsection">青铜</div>
+                <div class="level-subsection">钻石</div>
+                <div class="level-subsection">王者</div>
+            </div>
+            <div class="levelList ">
+                <div class="levelList-container">
+
+                </div>
+                <div class="levelList-container">
+
+                </div>
+                <div class="levelList-container">
+
+                </div>
+            </div>
+        </div>
+        <div class="custom">
+            <div class="info">
+                <span>自定义关卡</span>
+                <div class="star">
+                    <img width="20" height="20" src="./image/star-fill.svg" alt="">
+                    <span class="star_obtained">0</span>/
+                    <span class="star_total">0</span>
+                </div>
+            </div>
+            <div class="levelList ">
+                <div class="levelList-container active">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="settings-dialog dialog">
+    <div class="dialog_title">
+        <span>游戏设置</span>
+        <div class="close-btn">
+            <img src="./image/close.svg" width="25" height="25" alt="">
+        </div>
+    </div>
+
+    <div class="dialog_content">
+        游戏模式
+        <div class="switch_btn" mode="on">
+            <div>
+                <span>计时</span>
+                <div class="radius_symbol"></div>
+                <span>计步</span>
+            </div>
+        </div>
+    </div>
+    <div class="dialog_content">
+        玩家视角
+        <div class="switch_btn" mode="on">
+            <div>
+                <span>跟随</span>
+                <div class="radius_symbol"></div>
+                <span>锁定</span>
+            </div>
+        </div>
+    </div>
+    <button class="save_btn">保存</button>
+</div>
+
+<div class="message-dialog dialog">
+    <div class="dialog_title">
+        <span>消息提示</span>
+        <div class="close-btn">
+            <img src="./image/close.svg" width="25" height="25" alt="">
+        </div>
+    </div>
+
+    <h4 class="dialog_content dialog_message_content">
+    </h4>
+    <button class="close-btn">关闭</button>
+</div>
+
+<!--功能栏-->
+<div class="options_container" >
+    <div class="hidden">
+        <img src="./image/level.svg" alt=""/>
+    </div>
+    <div class="hidden">
+        <img src="./image/skin.svg" alt=""/>
+    </div>
+    <div class="hidden">
+        <img src="./image/settings.svg" alt=""/>
+    </div>
+    <div>
+        <img src="./image/home.svg" alt=""/>
+    </div>
+</div>
+
+<img style="position: fixed;
+    right: 30px;
+    bottom: 30px;
+    width: 400px;" src="./image/advertisement.png" alt=""/>
+
+
+<script src="./js/three.js"></script>
+<script src="./js/stats.min.js"></script>
+
+<script type="module">
+
+    import Factory from "./js/custom/Factory.js";
+    import GamePlot from "./js/custom/GamePlot.js";
+    import config from './js/custom/Config.js'
+
+
+    let stats = new Stats()
+    stats.setMode(0)
+    // document.getElementById('Stats-output').appendChild(stats.domElement)
+
+    //传入需要预加载的资源
+    Factory.preload(() =>{
+        new GamePlot().startup({
+            // stats
+        })
+    }, [])
+
+
+</script>
+
+</body>
+</html>
