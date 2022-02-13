@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            /*background: url("./image/home-bg.gif") center / cover no-repeat;*/
+        }
+
+        .container video {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+            pointer-events: none;
+        }
+
+        .btn-wrap {
+            position: absolute;
+            left: 50%;
+            bottom: 80px;
+            transform: translate(-50%);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .btn-wrap > .btn {
+            margin: 10px 0;
+            padding: 12px 35px;
+        }
+    </style>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+
+<div class="message-dialog dialog">
+    <div class="dialog_title">
+        <span>游戏订阅</span>
+        <div class="close-btn">
+            <img src="./image/close.svg" width="25" height="25" alt="">
+        </div>
+    </div>
+
+    <div class="dialog_content">
+        <input class="input" type="email" required placeholder="请输入邮箱">
+    </div>
+    <button class="close-btn">订阅</button>
+</div>
+
+
+<div class="container">
+    <video id="video" muted loop autoplay src=""></video>
+    <div class="btn-wrap">
+        <a class="btn" href="game.html">开始游戏</a>
+        <a class="btn" target="_blank" href="custom.html">创意工坊</a>
+        <a class="btn" onclick="openSubDialog()">订阅游戏</a>
+        <a class="btn" onclick="openFeedbackDialog()">意见反馈</a>
+    </div>
+</div>
+
+<script type="module">
+
+    import config from './js/custom/Config.js'
+    import {TipsDialog} from './js/custom/Dialog2.js'
+    import Toast from "./js/custom/Toast.js";
+
+    let subHtml = `<input class="input" type="email" required placeholder="请输入邮箱">`
+
+    window.subDialog = new TipsDialog([{
+        text: '订阅', callback: () => {
+            new Toast('订阅成功').show()
+        }
+    }])
+
+    window.openSubDialog = function () {
+        subDialog.open(subHtml)
+    }
+
+    let feedbackHtml = `<textarea rows="4" class="textarea" placeholder="请输入反馈内容" required></textarea>`
+
+    window.feedbackDialog = new TipsDialog([{
+        text: '反馈', callback: () => {
+            new Toast('反馈成功').show()
+        }
+    }])
+
+    window.openFeedbackDialog = function () {
+        feedbackDialog.open(feedbackHtml)
+    }
+
+    document.getElementById('video').src = config.CDN_URL_PREFIX + 'video/video.mp4'
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            width: 100%;
+            height: 100vh;
+        }
+    </style>
+    <link rel="stylesheet" href="css/progress.css">
+</head>
+<body>
+<!--<div class="dialog">-->
+<!--    <div class="dialog_title">-->
+<!--        <span>提示</span>-->
+<!--        <div class="close-btn">-->
+<!--            <img src="./image/close.svg" width="25" height="25" alt="">-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <h3 class="dialog_content tips_content">123</h3>-->
+<!--    <div class="dialog-btn-wrap">-->
+<!--        <button>123</button>-->
+<!--        <button>123</button>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<div class="full-progress-container">-->
+<!--    <div>-->
+<!--        <div class="full-loading">-->
+<!--            <span>Loading</span><dot>...</dot>-->
+<!--        </div>-->
+<!--        <div class="full-progress full-progress-striped">-->
+<!--            <div class="full-progress-bar" style="width: 100%;"></div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<div class="mini-progress-container">
+    <div class="mini-progress mini-progress-striped progress-striped">
+        <div class="full-progress-bar" style="width: 100%;"></div>
+    </div>
+</div>
+
+
+<!--<script type="module">-->
+
+<!--    import Progress from "./js/custom/Progress.js";-->
+
+<!--    let progress = new Progress()-->
+<!--    let test = 0-->
+<!--    setInterval(() => {-->
+<!--        console.log(test);-->
+<!--        progress.onProgress(test += 0.01)-->
+<!--    }, 100)-->
+
+<!--</script>-->
+<link rel="stylesheet" href="./css/style.css">
+
+<button onclick="audio.play()">123</button>
+
+<script>
+    const audio = new Audio('./audio/bgm.mp3')
+    audio.loop = true
+    audio.autoplay = true
+    // audio
+</script>
+<script type="module">
+
+    // import Video from "./js/custom/Video.js"
+    // import Question from "./js/custom/Question.js"
+    import {TipsDialog} from "./js/custom/Dialog2.js";
+
+    window.test = function () {
+        let tipsDialog = new TipsDialog([{
+            text: "关闭按钮",
+            isClose: true,
+        }, {
+            text: "其他有回调的按钮",
+            callback() {
+                console.log('其他有回调的按钮');
+            }
+        }, {
+            text: "没有回调的按钮",
+        }], () => {
+            console.log('手动关闭的回调');
+        })
+        tipsDialog.open("msg")
+    }
+
+    // window.test = function () {
+    //     new Question(5).show().then(() => {
+    //         console.log("成功")
+    //     }).catch(() => {
+    //         console.log("失败")
+    //     })
+    // }
+    //
+    // window.test1 = function () {
+    //     new Video('./video/ad.mp4').show().then(() => {
+    //         console.log("成功")
+    //     }).catch(() => {
+    //         console.log("失败")
+    //     })
+    // }
+
+</script>
+</body>
+</html>

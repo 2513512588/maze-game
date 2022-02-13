@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+<button onclick="registerRoom()">开房间</button>
+
+<script type="module">
+
+    import config from './js/custom/Config.js'
+
+    window.registerRoom = function () {
+        let params = 'map=' + JSON.stringify({
+            value: 180,
+            matrix: [
+                [1, 1, 1, 1, 1, 1, 1, 1, 1],
+                [1, 0, 0, 0, 0, 0, 0, 0, 1],
+                [1, 0, 0, 0, 0, 0, 1, 0, 1],
+                [1, 1, 1, 1, 1, 0, 1, 0, 1],
+                [1, 0, 0, 0, 1, 0, 1, 0, 1],
+                [1, 1, 1, 0, 1, 0, 1, 0, 1],
+                [1, 1, 0, 0, 0, 0, 0, 0, 1],
+                [1, 0, 0, 0, 1, 1, 1, 0, 1],
+                [1, 0, 0, 0, 0, 0, 1, 0, 1],
+                [1, 0, 0, 0, 0, 0, 1, 0, 1],
+                [1, 0, 1, 0, 0, 0, 0, 0, 1],
+                [1, 0, 1, 0, 1, 1, 1, 0, 1],
+                [1, 0, 0, 0, 0, 0, 0, 0, 1],
+                [1, 1, 1, 1, 1, 1, 1, 1, 1],
+            ]
+        })
+        fetch('http://' + config.GAME_ONLINE.BASE_URL + ':' + config.GAME_ONLINE.HTTP_PORT + '/room/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: params
+        }).then(res => res.json()).then(res => {
+            console.log(res)
+            if (res.success) {
+                document.body.innerHTML += ' <br/><a href="game_online.html?roomId=' + res.data.uuid + '" target="_blank">房间号：' + res.data.uuid + '</a>'
+            }
+        })
+    }
+
+</script>
+
+</body>
+</html>

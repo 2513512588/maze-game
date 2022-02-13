@@ -1,0 +1,11 @@
+Model Information:
+* title:	Monster_RUN
+* source:	https://sketchfab.com/3d-models/monster-run-2bd3ffa56ae8450a826de7386031a0a1
+* author:	tarotaro49 (https://sketchfab.com/tarotaro49)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Monster_RUN" (https://sketchfab.com/3d-models/monster-run-2bd3ffa56ae8450a826de7386031a0a1) by tarotaro49 (https://sketchfab.com/tarotaro49) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
