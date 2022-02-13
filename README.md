@@ -8,6 +8,19 @@ maze_game_online
  * 视角跟随
  * 玩法新颖
 
+相关截图
+=====
+<img alt="img.png" src="https://maze-game.oss-cn-shenzhen.aliyuncs.com/screenshot/home.gif" width="300"/>
+<img alt="img.png" src="https://maze-game.oss-cn-shenzhen.aliyuncs.com/screenshot/img.png" width="300"/>
+<img alt="img.png" src="https://maze-game.oss-cn-shenzhen.aliyuncs.com/screenshot/img_1.png" width="300"/>
+<img alt="img.png" src="https://maze-game.oss-cn-shenzhen.aliyuncs.com/screenshot/img_2.png" width="300"/>
+<img alt="img.png" src="https://maze-game.oss-cn-shenzhen.aliyuncs.com/screenshot/img_3.png" width="300"/>
+<img alt="img.png" src="https://maze-game.oss-cn-shenzhen.aliyuncs.com/screenshot/img_4.png" width="300"/>
+<img alt="img.png" src="https://maze-game.oss-cn-shenzhen.aliyuncs.com/screenshot/img_5.png" width="300"/>
+<img alt="img.png" src="https://maze-game.oss-cn-shenzhen.aliyuncs.com/screenshot/img_7.png" width="300"/>
+<img alt="img.png" src="https://maze-game.oss-cn-shenzhen.aliyuncs.com/screenshot/maze-game.gif" width="100%"/>
+<img alt="img.png" src="https://maze-game.oss-cn-shenzhen.aliyuncs.com/screenshot/img_6.png" width="300"/>
+
 安装
 =====
 composer install
