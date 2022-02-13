@@ -10,7 +10,7 @@ class Map {
 
     /**
      *  {
-     *       value: 50,
+     *       value: 80,
      *       position: [7, 4],
      *       matrix: [],
      *       level
