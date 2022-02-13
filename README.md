@@ -10,7 +10,7 @@ maze_game_online
 
 相关截图
 =====
-<img alt="img.png" src="https://maze-game.oss-cn-shenzhen.aliyuncs.com/screenshot/home.gif" width="300"/>
+<img alt="img.png" src="https://github.com/2513512588/maze-game/blob/master/screenshot/home.gif?raw=true" width="300"/>
 <img alt="img.png" src="https://maze-game.oss-cn-shenzhen.aliyuncs.com/screenshot/img.png" width="300"/>
 <img alt="img.png" src="https://maze-game.oss-cn-shenzhen.aliyuncs.com/screenshot/img_1.png" width="300"/>
 <img alt="img.png" src="https://maze-game.oss-cn-shenzhen.aliyuncs.com/screenshot/img_2.png" width="300"/>
@@ -18,7 +18,7 @@ maze_game_online
 <img alt="img.png" src="https://maze-game.oss-cn-shenzhen.aliyuncs.com/screenshot/img_4.png" width="300"/>
 <img alt="img.png" src="https://maze-game.oss-cn-shenzhen.aliyuncs.com/screenshot/img_5.png" width="300"/>
 <img alt="img.png" src="https://maze-game.oss-cn-shenzhen.aliyuncs.com/screenshot/img_7.png" width="300"/>
-<img alt="img.png" src="https://maze-game.oss-cn-shenzhen.aliyuncs.com/screenshot/maze-game.gif" width="100%"/>
+<img alt="img.png" src="https://github.com/2513512588/maze-game/blob/master/screenshot/maze-game.gif?raw=true" width="100%"/>
 <img alt="img.png" src="https://maze-game.oss-cn-shenzhen.aliyuncs.com/screenshot/img_6.png" width="300"/>
 
 安装
